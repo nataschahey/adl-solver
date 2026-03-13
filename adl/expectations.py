@@ -66,11 +66,11 @@ def expected_shortfall_gbm(x_i, q_i, p_entry_i, p_tau, m_i, sigma, Delta, rho):
     # weights: shape (K,K)
     W = weights[:, None] * weights[None, :]              # (K,K)
 
-    val  = float(np.sum(W * shortfall))
+    val  = float(np.sum(W * shortfall))/ (2 * np.pi)
 
     # gradient: shape (2,)
     # grad += w * (p_tau - p_T) where shortfall > 0
     mask = (shortfall > 0).astype(float)                 # (K,K)
-    grad = ((W * mask)[:, :, None] * (p_tau - p_T)).sum(axis=(0,1))
+    grad = ((W * mask)[:, :, None] * (p_tau - p_T)).sum(axis=(0,1))/ (2 * np.pi)
 
     return val, grad
